@@ -12,35 +12,36 @@
     </header>
     <div class='calculator'>
         <div class='display'>
-            <p>CALC</p>
+            <p id='true-display'>0</p>
+            <p id='calc-style'>Basic</p>
         </div>
         <div class='buttons'>
             <div class='row'>
-                <button class='clear'>C</button>
-                <button class='operator right-most'>&#247</button>
+                <button id='bc' class='clear'>C</button>
+                <button id='bdiv' class='operator right-most'>&#247</button>
             </div>
             <div class='row'>
-                <button class='number'>7</button>
-                <button class='number'>8</button>
-                <button class='number'>9</button>
-                <button class='operator right-most'>&#215</button>
+                <button id='b7' class='number'>7</button>
+                <button id='b8' class='number'>8</button>
+                <button id='b9' class='number'>9</button>
+                <button id='bmult' class='operator right-most'>&#215</button>
             </div>
             <div class='row'>
-                <button class='number'>4</button>
-                <button class='number'>5</button>
-                <button class='number'>6</button>
-                <button class='operator right-most'>&#8722</button>
+                <button id='b4' class='number'>4</button>
+                <button id='b5' class='number'>5</button>
+                <button id='b6' class='number'>6</button>
+                <button id='bsub' class='operator right-most'>&#8722</button>
             </div>
             <div class='row'>
-                <button class='number'>1</button>
-                <button class='number'>2</button>
-                <button class='number'>3</button>
-                <button class='operator right-most'>+</button>
+                <button id='b1' class='number'>1</button>
+                <button id='b2' class='number'>2</button>
+                <button id='b3' class='number'>3</button>
+                <button id='badd' class='operator right-most'>+</button>
             </div>
-            <div class='row'>
-                <button class='zero'>0</button>
-                <button class='operator'>.</button>
-                <button class='operator right-most'>&#61</button>
+            <div class='row bottom-most'>
+                <button id='b0' class='zero'>0</button>
+                <button id='bdot' class='operator'>.</button>
+                <button id='beq' class='operator right-most'>&#61</button>
             </div>
         </div>
     </div>
