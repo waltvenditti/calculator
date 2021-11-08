@@ -7,6 +7,10 @@ let x = null;
 let y = null;
 let operator = null;
 
+let xForRepeat = null;
+let yForRepeat = null;
+let opForRepeat = null;
+
 
 // basic math functions
 //---------------------
@@ -27,7 +31,6 @@ function operate(operator, x, y) {
             solution = divide(x, y);
             break;
     };
-
     return solution;
 };
 
@@ -49,6 +52,7 @@ function divide(x, y) {
 
 
 // other functions
+//----------------
 
 function updateDisplay() {
     let dispVal = document.querySelector('#true-display');
@@ -57,10 +61,14 @@ function updateDisplay() {
 
 function clearData() {
     displayNumber = '0';
-    firstPress = true;
     x = null;
     y = null;
     operator = null;
+};
+
+function removeTrailingZeros(numStr) {
+    num = Number(numStr);
+    return '' + num;
 };
 
 function getY() {
@@ -75,7 +83,6 @@ function checkOpSwitch() {
     } else {
         return false;
     }; 
-    // was a new operator button pressed before a num entered?
 };
 
 function removeOperator() {
@@ -83,6 +90,52 @@ function removeOperator() {
     displayNumber = strArray[0];
     x = null;
     operator = null;
+};
+
+function checkDecimalLength(number) {
+    number -= Math.floor(number);
+    decStr = '';
+    decStr += number;
+    if (decStr.length > 10) return true;
+    else return false; 
+};
+
+function reduceDecimalLength(number) {
+   fNumber = number.toFixed(10);
+    return fNumber;
+};
+
+function calcAndUpdate() {
+    getY();
+    solution = operate(operator, x, y);
+    toggleRepeat(solution);
+    clearData();
+    if (checkDecimalLength(solution)) {
+        solution = reduceDecimalLength(solution);
+    }
+    newNum = '' + solution;
+    newNum = removeTrailingZeros(newNum);
+    displayNumber = newNum;
+    updateDisplay();
+};
+
+function calcAndUpdateNoY() {
+    solution = operate(operator, x, y);
+    toggleRepeat(solution);
+    clearData();
+    if (checkDecimalLength(solution)) {
+        solution = reduceDecimalLength(solution);
+    }
+    newNum = '' + solution;
+    newNum = removeTrailingZeros(newNum);
+    displayNumber = newNum;
+    updateDisplay();
+};
+
+function toggleRepeat(number) {
+    xForRepeat = number;
+    yForRepeat = y;
+    opForRepeat = operator;
 };
 
 
@@ -110,6 +163,7 @@ const btnEq = document.querySelector('#beq');
 
 // the number buttons 
 //-------------------
+
 btn0.addEventListener('click', () => {
     if (firstPress === true) {
         displayNumber = '0';
@@ -212,67 +266,91 @@ btn9.addEventListener('click', () => {
 
 
 // the operator buttons
+// --------------------
 
 btnAdd.addEventListener('click', () => {
+    if (displayNumber === '0' && firstPress === true) return;
     if (checkOpSwitch() === true) removeOperator();
-    if (x === null) {
-        x = Number(displayNumber);
-        displayNumber += ' + ';
-        operator = '+';
-        updateDisplay();
+    if (!(x === null)) {
+        calcAndUpdate();
+        firstPress = false;
     }
+    x = Number(displayNumber);
+    displayNumber += ' + ';
+    operator = '+';
+    updateDisplay();
 });
 
 btnSub.addEventListener('click', () => {
+    if (displayNumber === '0' && firstPress === true) return;
     if (checkOpSwitch() === true) removeOperator();
-    if (x === null) {
-        x = Number(displayNumber);
-        displayNumber += ' - ';
-        operator = '-';
-        updateDisplay();
+    if (!(x === null)) {
+        calcAndUpdate();
+        firstPress = false;
         }
+    x = Number(displayNumber);
+    displayNumber += ' - ';
+    operator = '-';
+    updateDisplay();
 });
 
 btnMult.addEventListener('click', () => {
+    if (displayNumber === '0' && firstPress === true) return;
     if (checkOpSwitch() === true) removeOperator();
-    if (x === null) {
-        x = Number(displayNumber);
-        displayNumber += ' \xD7 ';
-        operator = '*';
-        updateDisplay();
+    if (!(x === null)) {
+        calcAndUpdate();
+        firstPress = false;
         }
+    x = Number(displayNumber);
+    displayNumber += ' \xD7 ';
+    operator = '*';
+    updateDisplay();
 });
 
 btnDiv.addEventListener('click', () => {
+    if (displayNumber === '0' && firstPress === true) return;
     if (checkOpSwitch() === true) removeOperator();
-    if (x === null) {
-        x = Number(displayNumber);
-        displayNumber += ' \xF7 ';
-        operator = '/';
-        updateDisplay();
+    if (!(x === null)) {
+        calcAndUpdate();
+        firstPress = false;
         }
+    x = Number(displayNumber);
+    displayNumber += ' \xF7 ';
+    operator = '/';
+    updateDisplay();
 });
 
 
 // the point button
+//-----------------
+btnDot.addEventListener('click', () => {
+    if (displayNumber.split(' ')[2] === '') {
+        displayNumber += '0.';
+    } else {
+        displayNumber += '.';
+    }
+    updateDisplay();
+});
 
 // the clear button
+//-----------------
+
 btnC.addEventListener('click', () => {
     clearData();
+    firstPress = true;
     updateDisplay();
 });
 
 // the equals button
+//------------------
+
 btnEq.addEventListener('click', () => {
-    getY();
-    solution = operate(operator, x, y);
-    clearData();
-    displayNumber = solution;
-    updateDisplay();
+    if (x === null) {
+        x = xForRepeat;
+        y = yForRepeat;
+        operator = opForRepeat;
+        calcAndUpdateNoY();
+        return;
+    }
+    calcAndUpdate();
 });
-
-
-// decimal button operational
-// reduce or limit size of decimal values 
-// chain operations: 4 + 6 + 2 - 45 etc
-// after an operation, with number on display, hit new operator and enter new number 
