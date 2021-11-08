@@ -66,11 +66,12 @@ header p {
     width: 100%;
     align-items: center;
     padding-bottom: 48px;
+    border-bottom: 5px solid black;
 }
 
 .display {
     text-align: center;
-    max-width: 300px;
+    max-width: 304px;
     width: 100%;
     border: 3px darkgreen solid;
     border-bottom: 0;
@@ -81,6 +82,7 @@ header p {
     flex-direction: column;
     box-sizing: border-box;
     background-color: mintcream;
+    border-right: 4px solid black;
 }
 
 .display p {
@@ -105,6 +107,8 @@ header p {
     flex-direction: column;
     max-width: 300px;
     width: 100%;
+    border-bottom: 4px solid black;
+    border-right: 4px solid black;
 }
 
 button {
@@ -151,6 +155,16 @@ button:active {
 
 .right-most {
     border-right: 3px solid darkgreen;
+    background-color: #7AA883;
+    color: honeydew;
+}
+
+.right-most:hover {
+    background-color:rgb(83, 114, 89);
+}
+
+.right-most:active {
+    background-color: darkgreen;
 }
 
 .bottom-most {
