@@ -1,24 +1,71 @@
+@font-face {
+    font-family: "pocket calculator";
+    src: url(../pocket-calculator/pocket_calcuatlor_ot.otf);
+}
+
+@font-face {
+    font-family: "discotechia";
+    src: url(../discotechia/discotechia.ttf);
+}
+
+@font-face {
+    font-family: "discotechia-straight";
+    src: url(../discotechia/discotechiastraight.ttf);
+}
+
 * {
     border: 0px solid black;
     caret-color: transparent;
+    font-family: "discotechia-straight", sans-serif;
+}
+
+html {
+    width: 100%;
+    height: 100%;
+    border-bottom: 0px solid black;
+    background-color: rgb(83, 114, 89);
 }
 
 body {
     display: flex;
     align-items: center;
     flex-direction: column;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(155, 192, 162);
+    margin: 0;
+    opacity: 1;
+    background-size: 0;
+    background-position: 0;
+    background-image: none;
 }
 
 header {
+    border: 0px solid red;
+    width: 100%;
+    font-weight: bold;
+    font-size: 64px;
+    margin-bottom: 48px;
     display: flex;
 }
 
+header p {
+    flex: 1 1 auto;
+    font-family: 'discotechia', sans-serif;
+    margin-top: 0;
+    margin-bottom: 0;
+    border-bottom: 5px solid black;
+    text-align: center;
+    background-color: honeydew;
+}
+
 .calculator {
-    border: 1px red solid;
+    border: 0px red solid;
     display: flex;
     flex-direction: column;
     width: 100%;
     align-items: center;
+    padding-bottom: 48px;
 }
 
 .display {
@@ -37,9 +84,10 @@ header {
 }
 
 .display p {
-    font-size: 24px;
+    font-size: 36px;
     margin: 0;
     margin-right: 8px;
+    font-family: "pocket calculator", sans-serif;
 }
 
 #calc-style {
@@ -47,6 +95,7 @@ header {
     margin-top: 8px;
     margin-bottom: 0;
     color: forestgreen;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
 }
 
 
@@ -67,7 +116,7 @@ button {
     border-bottom: 0;
     box-sizing: border-box;
     background-color: honeydew;
-    font-size: 20px;
+    font-size: 32px;
 }
 
 button:hover {
@@ -90,6 +139,12 @@ button:active {
     padding-right: 5px;
 }
 
+.back {
+    flex: 3;
+    padding-right: 5px;
+    display: none;
+}
+
 .operator {
     flex: 1;
 }
@@ -109,4 +164,15 @@ button:active {
 .zero {
     flex: 2;  
     padding-right: 3px;  
+}
+
+#empty-space {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    background-color: #537259;
+    opacity: 0.8;
+    background-image:  linear-gradient(#F0FFF0 2px, transparent 2px), linear-gradient(90deg, #F0FFF0 2px, transparent 2px), linear-gradient(#F0FFF0 1px, transparent 1px), linear-gradient(90deg, #F0FFF0 1px, #537259 1px);
+    background-size: 50px 50px, 50px 50px, 10px 10px, 10px 10px;
+    background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
 }

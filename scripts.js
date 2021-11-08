@@ -6,6 +6,7 @@ let firstPress = true;
 let x = null;
 let y = null;
 let operator = null;
+let clearState = true;
 
 let xForRepeat = null;
 let yForRepeat = null;
@@ -117,6 +118,7 @@ function calcAndUpdate() {
     newNum = removeTrailingZeros(newNum);
     displayNumber = newNum;
     updateDisplay();
+    if (clearState === false) toggleClear();
 };
 
 function calcAndUpdateNoY() {
@@ -130,12 +132,25 @@ function calcAndUpdateNoY() {
     newNum = removeTrailingZeros(newNum);
     displayNumber = newNum;
     updateDisplay();
+    if (clearState === false) toggleClear();
 };
 
 function toggleRepeat(number) {
     xForRepeat = number;
     yForRepeat = y;
     opForRepeat = operator;
+};
+
+function toggleClear() {
+    if (clearState === true) {
+        btnC.style['display'] = 'none';
+        btnCE.style['display'] = 'inline';
+    } else {
+        btnC.style['display'] = 'inline';
+        btnCE.style['display'] = 'none';
+    };
+
+    clearState = !clearState;
 };
 
 
@@ -158,6 +173,7 @@ const btnMult = document.querySelector('#bmult');
 const btnDiv = document.querySelector('#bdiv');
 const btnDot = document.querySelector('#bdot');
 const btnC = document.querySelector('#bc');
+const btnCE = document.querySelector('#bce');
 const btnEq = document.querySelector('#beq');
 
 
@@ -165,6 +181,7 @@ const btnEq = document.querySelector('#beq');
 //-------------------
 
 btn0.addEventListener('click', () => {
+    if (clearState === true) toggleClear();
     if (firstPress === true) {
         displayNumber = '0';
         firstPress = false;
@@ -175,6 +192,7 @@ btn0.addEventListener('click', () => {
 });
 
 btn1.addEventListener('click', () => {
+    if (clearState === true) toggleClear();
     if (firstPress === true) {
         displayNumber = '1';
         firstPress = false;
@@ -185,6 +203,7 @@ btn1.addEventListener('click', () => {
 });
 
 btn2.addEventListener('click', () => {
+    if (clearState === true) toggleClear();
     if (firstPress === true) {
         displayNumber = '2';
         firstPress = false;
@@ -195,6 +214,7 @@ btn2.addEventListener('click', () => {
 });
 
 btn3.addEventListener('click', () => {
+    if (clearState === true) toggleClear();
     if (firstPress === true) {
         displayNumber = '3';
         firstPress = false;
@@ -205,6 +225,7 @@ btn3.addEventListener('click', () => {
 });
 
 btn4.addEventListener('click', () => {
+    if (clearState === true) toggleClear();
     if (firstPress === true) {
         displayNumber = '4';
         firstPress = false;
@@ -215,6 +236,7 @@ btn4.addEventListener('click', () => {
 });
 
 btn5.addEventListener('click', () => {
+    if (clearState === true) toggleClear();
     if (firstPress === true) {
         displayNumber = '5';
         firstPress = false;
@@ -225,6 +247,7 @@ btn5.addEventListener('click', () => {
 });
 
 btn6.addEventListener('click', () => {
+    if (clearState === true) toggleClear();
     if (firstPress === true) {
         displayNumber = '6';
         firstPress = false;
@@ -235,6 +258,7 @@ btn6.addEventListener('click', () => {
 });
 
 btn7.addEventListener('click', () => {
+    if (clearState === true) toggleClear();
     if (firstPress === true) {
         displayNumber = '7';
         firstPress = false;
@@ -245,6 +269,7 @@ btn7.addEventListener('click', () => {
 });
 
 btn8.addEventListener('click', () => {
+    if (clearState === true) toggleClear();
     if (firstPress === true) {
         displayNumber = '8';
         firstPress = false;
@@ -255,6 +280,7 @@ btn8.addEventListener('click', () => {
 });
 
 btn9.addEventListener('click', () => {
+    if (clearState === true) toggleClear();
     if (firstPress === true) {
         displayNumber = '9';
         firstPress = false;
@@ -269,6 +295,7 @@ btn9.addEventListener('click', () => {
 // --------------------
 
 btnAdd.addEventListener('click', () => {
+    if (clearState === true) toggleClear();
     if (displayNumber === '0' && firstPress === true) return;
     if (checkOpSwitch() === true) removeOperator();
     if (!(x === null)) {
@@ -282,6 +309,7 @@ btnAdd.addEventListener('click', () => {
 });
 
 btnSub.addEventListener('click', () => {
+    if (clearState === true) toggleClear();
     if (displayNumber === '0' && firstPress === true) return;
     if (checkOpSwitch() === true) removeOperator();
     if (!(x === null)) {
@@ -295,6 +323,7 @@ btnSub.addEventListener('click', () => {
 });
 
 btnMult.addEventListener('click', () => {
+    if (clearState === true) toggleClear();
     if (displayNumber === '0' && firstPress === true) return;
     if (checkOpSwitch() === true) removeOperator();
     if (!(x === null)) {
@@ -308,6 +337,7 @@ btnMult.addEventListener('click', () => {
 });
 
 btnDiv.addEventListener('click', () => {
+    if (clearState === true) toggleClear();
     if (displayNumber === '0' && firstPress === true) return;
     if (checkOpSwitch() === true) removeOperator();
     if (!(x === null)) {
@@ -332,13 +362,51 @@ btnDot.addEventListener('click', () => {
     updateDisplay();
 });
 
-// the clear button
+// the clear buttons
 //-----------------
 
 btnC.addEventListener('click', () => {
     clearData();
     firstPress = true;
+    xForRepeat = null;
+    yForRepeat = null;
+    opForRepeat = null;
     updateDisplay();
+});
+
+btnCE.addEventListener('click', () => {
+    numArray = displayNumber.split(' ');
+    arrayLen = numArray.length;
+    if (arrayLen === 1) {
+        if (numArray[0].length > 1) {
+            displayNumber = displayNumber.slice(0, -1);
+            updateDisplay();
+            return;
+        } else if (!(numArray[0] === '0')) {
+            displayNumber = '0';
+            updateDisplay();
+            firstPress = true;
+            toggleClear();
+            xForRepeat = null;
+            yForRepeat = null;
+            opForRepeat = null;
+
+            return;
+        } else if (numArray[0] === '0') {
+            if (clearState === false) toggleClear();
+        }
+    };
+    if (arrayLen === 3) {
+        if (!(numArray[2] === '')) {
+            displayNumber = displayNumber.slice(0, -1);
+            updateDisplay();
+        } else {
+            displayNumber = displayNumber.slice(0, -3);
+            x = null;
+            operator = null;
+            updateDisplay();
+        }
+    };
 });
 
 // the equals button
@@ -346,11 +414,20 @@ btnC.addEventListener('click', () => {
 
 btnEq.addEventListener('click', () => {
     if (x === null) {
-        x = xForRepeat;
-        y = yForRepeat;
-        operator = opForRepeat;
-        calcAndUpdateNoY();
-        return;
+        if (!(xForRepeat === null)) {
+            x = xForRepeat;
+            y = yForRepeat;
+            operator = opForRepeat;
+            calcAndUpdateNoY();
+            return;
+        } else return; 
     }
     calcAndUpdate();
 });
+
+
+
+// C on start, on right after equal, on hitting second operator in a chain calculation (i.e. after calcandupdate and calcandupdatenoy)
+
+// toggle CE upon every number click, or op click
+// toggle C after each computation 
