@@ -62,12 +62,6 @@ function updateDisplay() {
             displayNumber = reduceStringLength(displayNumber);
         }
     }
-
-    //if (checkStringLength(displayNumber)) {
-    //   if (x === null) {
-    //    displayNumber = reduceStringLength(displayNumber);
-    //    }
-    //}
     dispVal.textContent = displayNumber;
 };
 
