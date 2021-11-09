@@ -434,6 +434,7 @@ btnEq.addEventListener('click', () => {
 
 // number keys
 //------------------------------------------------
+/*
 
 document.documentElement.addEventListener('keydown', (e) => {
     if (e.key === '0') {
@@ -750,3 +751,4 @@ document.documentElement.addEventListener('keydown', (e) => {
         calcAndUpdate();
     }
 });
+*/
