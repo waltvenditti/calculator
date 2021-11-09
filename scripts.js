@@ -1,12 +1,6 @@
 // global variables
 //-----------------
 
-
-// reducing exponents
-
-
-
-
 let displayNumber = '0';
 let firstPress = true; 
 let x = null;
@@ -63,9 +57,11 @@ function divide(x, y) {
 
 function updateDisplay() {
     let dispVal = document.querySelector('#true-display');
-    //if (displayNumber.indexOf('e') > -1) {
-    //    displayNumber = reduceStringLength(displayNumber);
-    //}
+    if (displayNumber.indexOf('e') > -1) {
+        if (displayNumber.split(' ').length === 1) {
+            displayNumber = reduceStringLength(displayNumber);
+        }
+    }
 
     //if (checkStringLength(displayNumber)) {
     //   if (x === null) {
