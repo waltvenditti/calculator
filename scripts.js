@@ -1,6 +1,12 @@
 // global variables
 //-----------------
 
+
+// reducing exponents
+
+
+
+
 let displayNumber = '0';
 let firstPress = true; 
 let x = null;
@@ -57,8 +63,26 @@ function divide(x, y) {
 
 function updateDisplay() {
     let dispVal = document.querySelector('#true-display');
+    //if (displayNumber.indexOf('e') > -1) {
+    //    displayNumber = reduceStringLength(displayNumber);
+    //}
+
+    //if (checkStringLength(displayNumber)) {
+    //   if (x === null) {
+    //    displayNumber = reduceStringLength(displayNumber);
+    //    }
+    //}
     dispVal.textContent = displayNumber;
 };
+
+function checkStringLength(number) {
+    if (number.length > 16) return true;
+    else return false;
+}
+
+function reduceStringLength(number) {
+    return Number(number).toExponential(10);
+}
 
 function clearData() {
     displayNumber = '0';
@@ -153,6 +177,115 @@ function toggleClear() {
     clearState = !clearState;
 };
 
+function checkForDecimal() {
+    if (displayNumber.split('.').length === 3) return true;
+    if (displayNumber.indexOf('.') > -1) {
+        if (x === null) return true;
+        else {
+            if (displayNumber.split(' ')[2].indexOf('.') > -1) return true;
+        };
+    } else return false; 
+};
+
+
+// functions for button action
+//----------------------------
+
+function numberButtonAction(number) {
+    if (clearState === true) toggleClear();
+    if (firstPress === true) {
+        displayNumber = number;
+        firstPress = false;
+    } else {
+        displayNumber += number;
+    }
+    updateDisplay();
+};
+
+function operatorButtonAction(op) {
+    if (clearState === true) toggleClear();
+    if (displayNumber === '0' && firstPress === true) return;
+    if (checkOpSwitch() === true) removeOperator();
+    if (!(x === null)) {
+        calcAndUpdate();
+        firstPress = false;
+    }
+    x = Number(displayNumber);
+    if (op === '*') displayNumber += ' \xD7 ';
+    else if (op === '/') displayNumber += ' \xF7 ';
+    else displayNumber += ` ${op} `;
+    operator = op;
+    updateDisplay();
+};
+
+function pointButtonAction() {
+    if (clearState === true) toggleClear();
+    if (checkForDecimal()) return;
+    if (displayNumber.split(' ')[2] === '') {
+        displayNumber += '0.';
+    } else {
+        displayNumber += '.';
+    }
+    if (firstPress === true) firstPress = false;
+    updateDisplay();
+};
+
+function cButtonAction() {
+    clearData();
+    firstPress = true;
+    xForRepeat = null;
+    yForRepeat = null;
+    opForRepeat = null;
+    updateDisplay();
+};
+
+function ceButtonAction() {
+    numArray = displayNumber.split(' ');
+    arrayLen = numArray.length;
+    if (arrayLen === 1) {
+        if (numArray[0].length > 1) {
+            displayNumber = displayNumber.slice(0, -1);
+            updateDisplay();
+            return;
+        } else if (!(numArray[0] === '0')) {
+            displayNumber = '0';
+            updateDisplay();
+            firstPress = true;
+            toggleClear();
+            xForRepeat = null;
+            yForRepeat = null;
+            opForRepeat = null;
+
+            return;
+        } else if (numArray[0] === '0') {
+            if (clearState === false) toggleClear();
+        }
+    };
+    if (arrayLen === 3) {
+        if (!(numArray[2] === '')) {
+            displayNumber = displayNumber.slice(0, -1);
+            updateDisplay();
+        } else {
+            displayNumber = displayNumber.slice(0, -3);
+            x = null;
+            operator = null;
+            updateDisplay();
+        }
+    };
+};
+
+function EqualButtonAction() {
+    if (x === null) {
+        if (!(xForRepeat === null)) {
+            x = xForRepeat;
+            y = yForRepeat;
+            operator = opForRepeat;
+            calcAndUpdateNoY();
+            return;
+        } else return; 
+    }
+    calcAndUpdate();
+};
 
 // isteners
 //-----------------
@@ -181,113 +314,34 @@ const btnEq = document.querySelector('#beq');
 //-------------------
 
 btn0.addEventListener('click', () => {
-    if (clearState === true) toggleClear();
-    if (firstPress === true) {
-        displayNumber = '0';
-        firstPress = false;
-    } else {
-        displayNumber += '0';
-    }
-    updateDisplay();
+    numberButtonAction('0');
 });
-
 btn1.addEventListener('click', () => {
-    if (clearState === true) toggleClear();
-    if (firstPress === true) {
-        displayNumber = '1';
-        firstPress = false;
-    } else {
-        displayNumber += '1';
-    }
-    updateDisplay();
+    numberButtonAction('1');
 });
-
 btn2.addEventListener('click', () => {
-    if (clearState === true) toggleClear();
-    if (firstPress === true) {
-        displayNumber = '2';
-        firstPress = false;
-    } else {
-        displayNumber += '2';
-    }
-    updateDisplay();
+    numberButtonAction('2');
 });
-
 btn3.addEventListener('click', () => {
-    if (clearState === true) toggleClear();
-    if (firstPress === true) {
-        displayNumber = '3';
-        firstPress = false;
-    } else {
-        displayNumber += '3';
-    }
-    updateDisplay();
+    numberButtonAction('3');
 });
-
 btn4.addEventListener('click', () => {
-    if (clearState === true) toggleClear();
-    if (firstPress === true) {
-        displayNumber = '4';
-        firstPress = false;
-    } else {
-        displayNumber += '4';
-    }
-    updateDisplay();
+    numberButtonAction('4');
 });
-
 btn5.addEventListener('click', () => {
-    if (clearState === true) toggleClear();
-    if (firstPress === true) {
-        displayNumber = '5';
-        firstPress = false;
-    } else {
-        displayNumber += '5';
-    }
-    updateDisplay();
+    numberButtonAction('5');
 });
-
 btn6.addEventListener('click', () => {
-    if (clearState === true) toggleClear();
-    if (firstPress === true) {
-        displayNumber = '6';
-        firstPress = false;
-    } else {
-        displayNumber += '6';
-    }
-    updateDisplay();
+    numberButtonAction('6');
 });
-
 btn7.addEventListener('click', () => {
-    if (clearState === true) toggleClear();
-    if (firstPress === true) {
-        displayNumber = '7';
-        firstPress = false;
-    } else {
-        displayNumber += '7';
-    }
-    updateDisplay();
+    numberButtonAction('7');
 });
-
 btn8.addEventListener('click', () => {
-    if (clearState === true) toggleClear();
-    if (firstPress === true) {
-        displayNumber = '8';
-        firstPress = false;
-    } else {
-        displayNumber += '8';
-    }
-    updateDisplay();
+    numberButtonAction('8');
 });
-
 btn9.addEventListener('click', () => {
-    if (clearState === true) toggleClear();
-    if (firstPress === true) {
-        displayNumber = '9';
-        firstPress = false;
-    } else {
-        displayNumber += '9';
-    }
-    updateDisplay();
+    numberButtonAction('9');
 });
 
 
@@ -295,134 +349,40 @@ btn9.addEventListener('click', () => {
 // --------------------
 
 btnAdd.addEventListener('click', () => {
-    if (clearState === true) toggleClear();
-    if (displayNumber === '0' && firstPress === true) return;
-    if (checkOpSwitch() === true) removeOperator();
-    if (!(x === null)) {
-        calcAndUpdate();
-        firstPress = false;
-    }
-    x = Number(displayNumber);
-    displayNumber += ' + ';
-    operator = '+';
-    updateDisplay();
+    operatorButtonAction('+');
 });
-
 btnSub.addEventListener('click', () => {
-    if (clearState === true) toggleClear();
-    if (displayNumber === '0' && firstPress === true) return;
-    if (checkOpSwitch() === true) removeOperator();
-    if (!(x === null)) {
-        calcAndUpdate();
-        firstPress = false;
-        }
-    x = Number(displayNumber);
-    displayNumber += ' - ';
-    operator = '-';
-    updateDisplay();
+    operatorButtonAction('-');
 });
-
 btnMult.addEventListener('click', () => {
-    if (clearState === true) toggleClear();
-    if (displayNumber === '0' && firstPress === true) return;
-    if (checkOpSwitch() === true) removeOperator();
-    if (!(x === null)) {
-        calcAndUpdate();
-        firstPress = false;
-        }
-    x = Number(displayNumber);
-    displayNumber += ' \xD7 ';
-    operator = '*';
-    updateDisplay();
+    operatorButtonAction('*');
 });
-
 btnDiv.addEventListener('click', () => {
-    if (clearState === true) toggleClear();
-    if (displayNumber === '0' && firstPress === true) return;
-    if (checkOpSwitch() === true) removeOperator();
-    if (!(x === null)) {
-        calcAndUpdate();
-        firstPress = false;
-        }
-    x = Number(displayNumber);
-    displayNumber += ' \xF7 ';
-    operator = '/';
-    updateDisplay();
+    operatorButtonAction('/');
 });
 
 
 // the point button
 //-----------------
 btnDot.addEventListener('click', () => {
-    if (displayNumber.split(' ')[2] === '') {
-        displayNumber += '0.';
-    } else {
-        displayNumber += '.';
-    }
-    updateDisplay();
+    pointButtonAction()
 });
 
 // the clear buttons
 //-----------------
 
 btnC.addEventListener('click', () => {
-    clearData();
-    firstPress = true;
-    xForRepeat = null;
-    yForRepeat = null;
-    opForRepeat = null;
-    updateDisplay();
+    cButtonAction();
 });
-
 btnCE.addEventListener('click', () => {
-    numArray = displayNumber.split(' ');
-    arrayLen = numArray.length;
-    if (arrayLen === 1) {
-        if (numArray[0].length > 1) {
-            displayNumber = displayNumber.slice(0, -1);
-            updateDisplay();
-            return;
-        } else if (!(numArray[0] === '0')) {
-            displayNumber = '0';
-            updateDisplay();
-            firstPress = true;
-            toggleClear();
-            xForRepeat = null;
-            yForRepeat = null;
-            opForRepeat = null;
-
-            return;
-        } else if (numArray[0] === '0') {
-            if (clearState === false) toggleClear();
-        }
-    };
-    if (arrayLen === 3) {
-        if (!(numArray[2] === '')) {
-            displayNumber = displayNumber.slice(0, -1);
-            updateDisplay();
-        } else {
-            displayNumber = displayNumber.slice(0, -3);
-            x = null;
-            operator = null;
-            updateDisplay();
-        }
-    };
+    ceButtonAction();
 });
 
 // the equals button
 //------------------
 
 btnEq.addEventListener('click', () => {
-    if (x === null) {
-        if (!(xForRepeat === null)) {
-            x = xForRepeat;
-            y = yForRepeat;
-            operator = opForRepeat;
-            calcAndUpdateNoY();
-            return;
-        } else return; 
-    }
-    calcAndUpdate();
+    EqualButtonAction();
 });
 
 
@@ -434,135 +394,56 @@ btnEq.addEventListener('click', () => {
 
 // number keys
 //------------------------------------------------
-/*
+
 
 document.documentElement.addEventListener('keydown', (e) => {
     if (e.key === '0') {
-        if (clearState === true) toggleClear();
-        if (firstPress === true) {
-            displayNumber = '0';
-            firstPress = false;
-        } else {
-            displayNumber += '0';
-        }
-        updateDisplay();
+        numberButtonAction('0');
     }
 });
-
 document.documentElement.addEventListener('keydown', (e) => {
     if (e.key === '1') {
-        if (clearState === true) toggleClear();
-        if (firstPress === true) {
-            displayNumber = '1';
-            firstPress = false;
-        } else {
-            displayNumber += '1';
-        }
-        updateDisplay();
+        numberButtonAction('1');
     }
 });
-
 document.documentElement.addEventListener('keydown', (e) => {
     if (e.key === '2') {
-        if (clearState === true) toggleClear();
-        if (firstPress === true) {
-            displayNumber = '2';
-            firstPress = false;
-        } else {
-            displayNumber += '2';
-        }
-        updateDisplay();
+        numberButtonAction('2');
     }
 });
-
 document.documentElement.addEventListener('keydown', (e) => {
     if (e.key === '3') {
-        if (clearState === true) toggleClear();
-        if (firstPress === true) {
-            displayNumber = '3';
-            firstPress = false;
-        } else {
-            displayNumber += '3';
-        }
-        updateDisplay();
+        numberButtonAction('3');
     }
 });
-
 document.documentElement.addEventListener('keydown', (e) => {
     if (e.key === '4') {
-        if (clearState === true) toggleClear();
-        if (firstPress === true) {
-            displayNumber = '4';
-            firstPress = false;
-        } else {
-            displayNumber += '4';
-        }
-        updateDisplay();
+        numberButtonAction('4');
     }
 });
-
 document.documentElement.addEventListener('keydown', (e) => {
     if (e.key === '5') {
-        if (clearState === true) toggleClear();
-        if (firstPress === true) {
-            displayNumber = '5';
-            firstPress = false;
-        } else {
-            displayNumber += '5';
-        }
-        updateDisplay();
+        numberButtonAction('5');
     }
 });
-
 document.documentElement.addEventListener('keydown', (e) => {
     if (e.key === '6') {
-        if (clearState === true) toggleClear();
-        if (firstPress === true) {
-            displayNumber = '6';
-            firstPress = false;
-        } else {
-            displayNumber += '6';
-        }
-        updateDisplay();
+        numberButtonAction('6');
     }
 });
-
 document.documentElement.addEventListener('keydown', (e) => {
     if (e.key === '7') {
-        if (clearState === true) toggleClear();
-        if (firstPress === true) {
-            displayNumber = '7';
-            firstPress = false;
-        } else {
-            displayNumber += '7';
-        }
-        updateDisplay();
+        numberButtonAction('7');
     }
 });
-
 document.documentElement.addEventListener('keydown', (e) => {
     if (e.key === '8') {
-        if (clearState === true) toggleClear();
-        if (firstPress === true) {
-            displayNumber = '8';
-            firstPress = false;
-        } else {
-            displayNumber += '8';
-        }
-        updateDisplay();
+        numberButtonAction('8');
     }
 });
-
 document.documentElement.addEventListener('keydown', (e) => {
     if (e.key === '9') {
-        if (clearState === true) toggleClear();
-        if (firstPress === true) {
-            displayNumber = '9';
-            firstPress = false;
-        } else {
-            displayNumber += '9';
-        }
-        updateDisplay();
+        numberButtonAction('9');
     }
 });
 
@@ -572,183 +453,46 @@ document.documentElement.addEventListener('keydown', (e) => {
 
 document.documentElement.addEventListener('keydown', (e) => {
     if (e.key === '+') {
-        if (clearState === true) toggleClear();
-        if (displayNumber === '0' && firstPress === true) return;
-        if (checkOpSwitch() === true) removeOperator();
-        if (!(x === null)) {
-            calcAndUpdate();
-            firstPress = false;
-        }
-        x = Number(displayNumber);
-        displayNumber += ' + ';
-        operator = '+';
-        updateDisplay();
+        operatorButtonAction('+');
     }
 });
 
 document.documentElement.addEventListener('keydown', (e) => {
     if (e.key === '-') {
-        if (clearState === true) toggleClear();
-        if (displayNumber === '0' && firstPress === true) return;
-        if (checkOpSwitch() === true) removeOperator();
-        if (!(x === null)) {
-            calcAndUpdate();
-            firstPress = false;
-            }
-        x = Number(displayNumber);
-        displayNumber += ' - ';
-        operator = '-';
-        updateDisplay();
+        operatorButtonAction('-');
     };
 });
 
 document.documentElement.addEventListener('keydown', (e) => {
     if (e.key === '*') {
-        if (clearState === true) toggleClear();
-        if (displayNumber === '0' && firstPress === true) return;
-        if (checkOpSwitch() === true) removeOperator();
-        if (!(x === null)) {
-            calcAndUpdate();
-            firstPress = false;
-            }
-        x = Number(displayNumber);
-        displayNumber += ' \xD7 ';
-        operator = '*';
-        updateDisplay();
+        operatorButtonAction('*');
     }
 });
 
 document.documentElement.addEventListener('keydown', (e) => {
     if (e.key === '/') {
-        if (clearState === true) toggleClear();
-        if (displayNumber === '0' && firstPress === true) return;
-        if (checkOpSwitch() === true) removeOperator();
-        if (!(x === null)) {
-            calcAndUpdate();
-            firstPress = false;
-            }
-        x = Number(displayNumber);
-        displayNumber += ' \xF7 ';
-        operator = '/';
-        updateDisplay();
+        operatorButtonAction('/');
     }
 });
 
 document.documentElement.addEventListener('keydown', (e) => {
         if (e.key === '.') {
-        if (displayNumber.split(' ')[2] === '') {
-            displayNumber += '0.';
-        } else {
-            displayNumber += '.';
-        }
-        updateDisplay();
+        pointButtonAction();
     }
 });
-
 
 document.documentElement.addEventListener('keydown', (e) => {
     if (e.key === 'Backspace') {
         if (clearState === true) {
-            clearData();
-            firstPress = true;
-            xForRepeat = null;
-            yForRepeat = null;
-            opForRepeat = null;
-            updateDisplay();
+            cButtonAction();
         } else {
-            numArray = displayNumber.split(' ');
-            arrayLen = numArray.length;
-            if (arrayLen === 1) {
-                if (numArray[0].length > 1) {
-                    displayNumber = displayNumber.slice(0, -1);
-                    updateDisplay();
-                    return;
-                } else if (!(numArray[0] === '0')) {
-                    displayNumber = '0';
-                    updateDisplay();
-                    firstPress = true;
-                    toggleClear();
-                    xForRepeat = null;
-                    yForRepeat = null;
-                    opForRepeat = null;
-        
-                    return;
-                } else if (numArray[0] === '0') {
-                    if (clearState === false) toggleClear();
-                }
-            };
-            if (arrayLen === 3) {
-                if (!(numArray[2] === '')) {
-                    displayNumber = displayNumber.slice(0, -1);
-                    updateDisplay();
-                } else {
-                    displayNumber = displayNumber.slice(0, -3);
-                    x = null;
-                    operator = null;
-                    updateDisplay();
-                }
-            };45
+            ceButtonAction();
         }
     }
-});
-
-
-btnC.addEventListener('click', () => {
-    clearData();
-    firstPress = true;
-    xForRepeat = null;
-    yForRepeat = null;
-    opForRepeat = null;
-    updateDisplay();
-});
-
-btnCE.addEventListener('click', () => {
-    numArray = displayNumber.split(' ');
-    arrayLen = numArray.length;
-    if (arrayLen === 1) {
-        if (numArray[0].length > 1) {
-            displayNumber = displayNumber.slice(0, -1);
-            updateDisplay();
-            return;
-        } else if (!(numArray[0] === '0')) {
-            displayNumber = '0';
-            updateDisplay();
-            firstPress = true;
-            toggleClear();
-            xForRepeat = null;
-            yForRepeat = null;
-            opForRepeat = null;
-
-            return;
-        } else if (numArray[0] === '0') {
-            if (clearState === false) toggleClear();
-        }
-    };
-    if (arrayLen === 3) {
-        if (!(numArray[2] === '')) {
-            displayNumber = displayNumber.slice(0, -1);
-            updateDisplay();
-        } else {
-            displayNumber = displayNumber.slice(0, -3);
-            x = null;
-            operator = null;
-            updateDisplay();
-        }
-    };
 });
 
 document.documentElement.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
-        if (x === null) {
-            if (!(xForRepeat === null)) {
-                x = xForRepeat;
-                y = yForRepeat;
-                operator = opForRepeat;
-                calcAndUpdateNoY();
-                return;
-            } else return; 
-        }
-        calcAndUpdate();
+            EqualButtonAction();
     }
 });
-*/

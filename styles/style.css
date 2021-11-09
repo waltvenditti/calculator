@@ -76,7 +76,9 @@ header p {
     width: 100%;
     border: 3px darkgreen solid;
     border-bottom: 0;
-    height: 80px;
+    min-height: 80px;
+    height: auto;
+    flex-wrap: wrap;
     display: flex;
     align-items: flex-end;
     justify-content: center;
@@ -84,6 +86,8 @@ header p {
     box-sizing: border-box;
     background-color: mintcream;
     border-right: 4px solid black;
+    word-break: break-all;
+    padding: 2px;
 }
 
 .display p {
